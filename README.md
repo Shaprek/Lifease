@@ -11,24 +11,99 @@ yarn dev
 # or
 pnpm dev
 # or
-bun dev
+# Lifease FAQ Assistant
+
+Full-stack AI-powered FAQ assistant built for the developer intern assessment.
+
+## Stack
+
+- Next.js App Router frontend
+- Express.js API server
+- MongoDB conversation storage
+- Provider-ready AI adapter layer
+
+## Features
+
+- Ask a question and receive an AI-style response
+- Save question, answer, and timestamp in MongoDB
+- Fetch previous conversations from the API
+- Search stored conversations
+- Dark mode interface
+
+## Setup
+
+1. Install dependencies:
+
+```bash
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Copy the example environment file:
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+```bash
+copy .env.example .env.local
+```
 
-## Learn More
+3. Update `.env.local` with your MongoDB connection string and AI provider key.
 
-To learn more about Next.js, take a look at the following resources:
+4. Start both the frontend and backend:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The app runs the Next.js frontend on `http://localhost:3000` and the Express API on `http://localhost:5001`.
 
-## Deploy on Vercel
+## API
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `GET /api/health`
+- `GET /api/conversations?search=term`
+- `POST /api/conversations`
+- `POST /api/chat`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Gemini Setup
+
+Install the Gemini SDK:
+
+```bash
+npm install @google/generative-ai
+```
+
+Add this to your environment file:
+
+```bash
+GEMINI_API_KEY=your_api_key
+```
+
+The Gemini route is implemented under `backend/services/aiService.js`, `backend/controllers/chatController.js`, and `backend/routes/chatRoutes.js`.
+
+## Postman Example
+
+Request:
+
+```http
+POST /api/chat
+Content-Type: application/json
+```
+
+Body:
+
+```json
+{
+	"question": "What is React?"
+}
+```
+
+Expected response:
+
+```json
+{
+	"success": true,
+	"answer": "React is a JavaScript library for building user interfaces..."
+}
+```
+
+## Notes
+
+- The current implementation uses a deterministic server-side response so the assessment is runnable without a live AI provider.
+- You can swap `buildAssistantReply` in `server/index.js` for OpenAI, Gemini, Claude, or OpenRouter.

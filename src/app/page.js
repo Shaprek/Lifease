@@ -1,7 +1,5 @@
+import ChatApp from '@/components/chat-app';
+
 export default function Home() {
-  return (
-    <main>
-      <div>Hello world!</div>
-    </main>
-  );
+  return <ChatApp />;
 }
